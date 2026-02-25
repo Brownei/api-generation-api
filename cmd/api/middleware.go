@@ -2,7 +2,9 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/Brownei/api-generation-api/utils"
@@ -31,7 +33,9 @@ func AuthMiddleware(jwtSecret string) func(http.Handler) http.Handler {
 				return []byte(jwtSecret), nil
 			})
 
-			if err != nil || !token.Valid {
+			if err != nil || token.Valid == false {
+				fmt.Printf("Error: %v", err)
+
 				http.Error(w, "Invalid token", http.StatusUnauthorized)
 				return
 			}
@@ -42,13 +46,35 @@ func AuthMiddleware(jwtSecret string) func(http.Handler) http.Handler {
 				return
 			}
 
-			userID, ok := claims["user_id"].(float64)
+			userIDValue, ok := claims["user_id"]
 			if !ok {
 				http.Error(w, "Invalid user ID in token", http.StatusUnauthorized)
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), utils.UserIDKey, uint(userID))
+			// Type assertion to get the actual value
+			var userID uint
+
+			switch v := userIDValue.(type) {
+			case float64:
+				userID = uint(v) // JWT numbers are float64 by default
+			case int:
+				userID = uint(v)
+			case int64:
+				userID = uint(v)
+			case uint:
+				userID = v
+			case string:
+				id, _ := strconv.ParseUint(v, 10, 64)
+				userID = uint(id)
+			default:
+				http.Error(w, "user_id has invalid type", http.StatusInternalServerError)
+				return
+			}
+
+			// Add to context
+			fmt.Printf("User id from claims: %v and %v. End of story", claims, claims["user_id"])
+			ctx := context.WithValue(r.Context(), utils.UserIDKey, userID)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

@@ -68,7 +68,7 @@ func (a *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	//
 	// http.SetCookie(w, cookie)
 	//
-	utils.WriteJSON(w, 200, []byte(token))
+	utils.WriteJSON(w, 200, token)
 }
 
 func (a *AuthController) Register(w http.ResponseWriter, r *http.Request) {
@@ -78,9 +78,7 @@ func (a *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	existingUser, err := a.userService.FindThisUser(authDto.Email)
-	fmt.Printf("New direct user %v", existingUser)
-
+	_, err := a.userService.FindThisUser(authDto.Email)
 	if err != nil {
 		if errors.Is(err, types.ErrUserNotFound) {
 			hashedPassword, err := a.authService.HashPassword(authDto.Pasword)

@@ -30,5 +30,17 @@ func (APIKey) TableName() string {
 }
 
 type AccessLogs struct {
-	ID uint `gorm:"primaryKey" json:"id"`
+	ID         uint      `gorm:"primaryKey" json:"id"`
+	UserID     uint      `gorm:"not null" json:"user_id"`
+	Method     string    `gorm:"type:varchar(10);not null" json:"method"`
+	Path       string    `gorm:"type:varchar(500);not null" json:"path"`
+	StatusCode int       `gorm:"not null" json:"status_code"`
+	IPAddress  string    `gorm:"type:varchar(45)" json:"ip_address"`
+	UserAgent  string    `gorm:"type:varchar(500)" json:"user_agent"`
+	Duration   int64     `gorm:"not null" json:"duration"`
+	Timestamp  time.Time `gorm:"type:timestamp;not null" json:"timestamp"`
+}
+
+func (AccessLogs) TableName() string {
+	return "access_logs"
 }

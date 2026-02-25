@@ -8,6 +8,7 @@ import (
 
 	"github.com/Brownei/api-generation-api/services"
 	"github.com/Brownei/api-generation-api/types"
+	"github.com/Brownei/api-generation-api/utils"
 )
 
 type AuthMiddleware struct {
@@ -42,7 +43,7 @@ func (m *AuthMiddleware) Authenticate(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "user_id", claims.UserID)
+		ctx := context.WithValue(r.Context(), utils.UserIDKey, claims.UserID)
 		ctx = context.WithValue(ctx, "user_email", claims.Email)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

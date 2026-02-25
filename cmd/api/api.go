@@ -81,6 +81,7 @@ func (a *Application) Run() error {
 
 		r.Route("/api", func(r chi.Router) {
 			r.Use(AuthMiddleware(a.cfg.JWTSecret))
+			// r.Use(appmiddleware.AuditLogMiddleware(a.store.AuditLogService))
 
 			r.Get("/users/{id}", userController.FindAUser)
 
