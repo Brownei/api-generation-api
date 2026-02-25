@@ -78,24 +78,6 @@ Import this collection into Postman to test the API:
       ]
     },
     {
-      "name": "Users",
-      "item": [
-        {
-          "name": "Get User",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/users/:id",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer <token>"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
       "name": "API Keys",
       "item": [
         {
