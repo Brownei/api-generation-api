@@ -140,7 +140,6 @@ Import this collection into Postman to test the API:
 | GET | `/v1/api/health` | Health check | No |
 | POST | `/v1/api/auth/register` | Register new user | No |
 | POST | `/v1/api/auth/login` | Login user | No |
-| GET | `/v1/api/users/{id}` | Get user by ID | Yes |
 | POST | `/v1/api/api-key` | Create API key | Yes |
 | GET | `/v1/api/api-key` | List all API keys | Yes |
 | GET | `/v1/api/api-key/{id}` | Revoke API key | Yes |
