@@ -20,8 +20,6 @@ func NewUserService(db *gorm.DB, cfg *config.AppConfig) *UserService {
 }
 
 func (u *UserService) CreateAUser(email, password string) (*db.User, error) {
-	var newUser db.User
-
 	fmt.Printf("Creating a user")
 	user := db.User{
 		Email:    email,
@@ -36,12 +34,12 @@ func (u *UserService) CreateAUser(email, password string) (*db.User, error) {
 		return nil, err
 	}
 
-	return &newUser, nil
+	return &user, nil
 }
 
 func (u *UserService) FindThisUser(email string) (*db.User, error) {
-	var newUser db.User
-	if err := u.db.Where("email = ?", email).First(&newUser).Error; err != nil {
+	var user db.User
+	if err := u.db.Where("email = ?", email).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, types.ErrUserNotFound
 		}
@@ -49,5 +47,5 @@ func (u *UserService) FindThisUser(email string) (*db.User, error) {
 		return nil, err
 	}
 
-	return &newUser, nil
+	return &user, nil
 }

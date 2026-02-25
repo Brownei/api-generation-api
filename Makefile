@@ -3,10 +3,7 @@ NC := \033[0m
 
 test: ## Run tests
 	@echo "$(YELLOW)Running all tests...$(NC)"
-	go test ./config
-	go test ./services
-	go test ./middleware
-	go test ./dto
+	go test ./tests
 
 run: ## Run docker postgres and start the application
 	@echo "$(YELLOW)Starting postgres container...$(NC)"

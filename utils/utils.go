@@ -67,7 +67,7 @@ func ValidateJson(payload any) error {
 
 func VerifyPassword(encryptedPassword string, password string) error {
 	if err := bcrypt.CompareHashAndPassword([]byte(encryptedPassword), []byte(password)); err != nil {
-		return fmt.Errorf(err.Error())
+		return fmt.Errorf("password mismatch: %w", err)
 	}
 
 	return nil
